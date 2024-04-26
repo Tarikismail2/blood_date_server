@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const crypto = require('crypto');
-const { checkUserExists, insertUser } = require('../controllers/usersController');
 
 const sequelize = require('../database');
 const  User  = require( '../models/User') ;
@@ -15,7 +13,7 @@ const verifyToken = require('../middleware/verifyToken');
 const { JWT_SECRET } = require('../middleware/config');
 
 
-const saltRounds = 10;
+const nombrehash = 10;
 
 
 router.post("/register", async (req, res) => {
@@ -25,7 +23,7 @@ router.post("/register", async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ error: "User already exists" });
         }
-        const encryptedPassword = await bcrypt.hash(password, saltRounds);
+        const encryptedPassword = await bcrypt.hash(password, nombrehash);
         await User.create({ firstName, lastName, email, mobile, password: encryptedPassword });
         res.status(201).json({ status: "ok", data: "User created" });
     } catch (error) {

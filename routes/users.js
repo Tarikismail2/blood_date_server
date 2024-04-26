@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 const { checkUserExists, insertUser } = require('../controllers/usersController');
-// the accolade is very important
+
 const sequelize = require('../database');
 const  User  = require( '../models/User') ;
 const  SlotLabel  = require( '../models/SlotLabel') ;
@@ -14,14 +14,10 @@ const Center =require('../models/Center');
 const verifyToken = require('../middleware/verifyToken');
 const { JWT_SECRET } = require('../middleware/config');
 
-// // Generation of a random token for resetting the password
-// const generateSecretKey = () => {
-//     return crypto.randomBytes(64).toString('hex');
-// }
-// const JWT_SECRET = generateSecretKey();
+
 const saltRounds = 10;
 
-// Register endpoint
+
 router.post("/register", async (req, res) => {
     const { firstName, lastName, email, mobile, password } = req.body;
     try {
@@ -56,7 +52,7 @@ router.post("/login-user", async (req, res) => {
         console.log("Login successful for email:", email);
         return res.status(200).json({ status: "ok", data: token, userType: user.userType });
     } catch (error) {
-        console.error("Error during login:", error);
+        console.log("Error during login:", error);
         res.status(500).json({ error: "Error during login" });
     }
 });
@@ -66,14 +62,14 @@ router.post("/userdata", async (req, res) => {
     const { token } = req.body;
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-        const userId = decoded.id; // Récupérer l'ID de l'utilisateur à partir du token décodé
-        const userData = await User.findByPk(userId); // Recherche de l'utilisateur par ID dans la base de données
+        const userId = decoded.id; 
+        const userData = await User.findByPk(userId); 
         if (!userData) {
             return res.status(404).json({ error: "User not found" });
         }
         return res.json({ status: "Ok", data: userData });
     } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.log("Error fetching user data:", error);
         return res.status(500).json({ error: "Error fetching user data" });
     }
 });
@@ -93,20 +89,17 @@ router.get('/:userId/appointments', verifyToken, async (req, res) => {
         };
         res.json(data);
     } catch (error) {
-        console.error('Error fetching appointments:', error);
+        console.log('Error fetching appointments:', error);
         res.status(500).json({ error: 'An error occurred while fetching appointments.' });
     }
 });
 
 
-
-
-// Logout route
 router.post('/logout', (req, res) => {
     try {
         res.status(200).json({ message: 'Déconnexion réussie.' });
     } catch (error) {
-        console.error('Erreur lors de la déconnexion:', error);
+        console.log('Erreur lors de la déconnexion:', error);
         res.status(500).json({ error: 'Erreur lors de la déconnexion.' });
     }
 });

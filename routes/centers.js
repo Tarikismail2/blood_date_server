@@ -15,18 +15,18 @@ router.post("/add_center", async (req, res) => {
     }
 });
 
-// Récupérer tous les centres
+
 router.get('/find_center', async (req, res) => {
     try {
       const centers = await Center.findAll();
       res.json(centers);
     } catch (error) {
-      console.error('Error fetching centers:', error);
+      console.log('Error fetching centers:', error);
       res.status(500).json({ error: 'Error fetching centers' });
     }
   });
   
-  // Modifier un centre
+  
   router.put('/edit_center/:id', async (req, res) => {
     const { center_name, location, contact, capacity } = req.body;
     try {
@@ -41,12 +41,12 @@ router.get('/find_center', async (req, res) => {
       await center.save();
       res.json(center);
     } catch (error) {
-      console.error('Error updating center:', error);
+      console.log('Error updating center:', error);
       res.status(500).json({ error: 'Error updating center' });
     }
   });
   
-  // Supprimer un centre
+
   router.delete('/delete_center/:id', async (req, res) => {
     try {
       const center = await Center.findByPk(req.params.id);
@@ -56,7 +56,7 @@ router.get('/find_center', async (req, res) => {
       await center.destroy();
       res.json({ message: 'Center deleted successfully' });
     } catch (error) {
-      console.error('Error deleting center:', error);
+      console.log('Error deleting center:', error);
       res.status(500).json({ error: 'Error deleting center' });
     }
   });

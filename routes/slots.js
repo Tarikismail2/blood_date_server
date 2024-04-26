@@ -5,7 +5,6 @@ const SlotLabel = require('../models/SlotLabel');
 
 router.get('/find_slots', findAllSlots);
 
-// Endpoint pour trouver un slot par son nom
 router.get('/find_slot', async (req, res) => {
     const { slotId } = req.query;
 
@@ -17,7 +16,7 @@ router.get('/find_slot', async (req, res) => {
             res.status(404).json({ error: 'Slot not found' });
         }
     } catch (error) {
-        console.error('Error finding slot:', error);
+        console.log('Error finding slot:', error);
         res.status(500).json({ error: 'Error finding slot' });
     }
 });

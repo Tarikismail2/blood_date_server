@@ -14,7 +14,7 @@ router.get('/find_appointment', findAllAppointments);
 
 router.post('/count-appointments', countAppointmentsByCenterId);
 
-// Mettre à jour le statut d'un rendez-vous
+
 router.put('/edit_status/:id', async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
@@ -27,7 +27,7 @@ router.put('/edit_status/:id', async (req, res) => {
         await appointment.save();
         res.json(appointment);
     } catch (error) {
-        console.error('Error updating appointment status:', error);
+        console.log('Error updating appointment status:', error);
         res.status(500).json({ error: 'Error updating appointment status' });
     }
 });
